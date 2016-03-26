@@ -85,12 +85,11 @@ d3.timer(function() {
         k1 = -5 - speed / 3;
 
     // Bounce off the walls.
-    if (x < 100 || x > width-100) spermatozoon.vx *= -1;
-    if (y < 100 || y > height-100) spermatozoon.vy *= -1;
+    //if (x < 100 || x > width-100) spermatozoon.vx *= -1;
+    //if (y < 100 || y > height-100) spermatozoon.vy *= -1;
 
     //stop at the walls.
-   // if (x < 100 || x > width-100) spermatozoon.vx *= 0.2;
-   // if (y < 100 || y > height-100) spermatozoon.vy *= 0.2;
+    if (((x < 100 || x > width -100) && (spermatozoon.vx < -.0000001|| spermatozoon.vx > .0000001)) || ((y < 100 || y > height -100) && (spermatozoon.vy < -.0000001 || spermatozoon.vy > .0000001))){ spermatozoon.vx *= 0.97; spermatozoon.vy *= 0.97;}
 
     // Swim!
     for (var j = 0; ++j < m;) {
