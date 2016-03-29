@@ -1,14 +1,15 @@
 console.log("HELLO");
 
 var bill = d3.select("#bill").text("name of the bill blabla");
-var sample ="400004,AL,4,Yea,Rep. Robert Aderholt [R],Republican\n400018,TX,6,Yea,Rep. Joe Barton [R],Republican\n400021,CA,34,Yea,Rep. Xavier Becerra [D],Democrat\n400029,UT,1,Not Voting,Rep. Rob Bishop [R],Republican";
-var info = sample.split("\n");
+var info = data[0].split("\n");
+//console.log(info);
+
 var counter = 0;
 while (counter != info.length){
     info[counter] = info[counter].split(",");
     counter ++;
 }
-
+//console.log(info);
 var width = window.innerWidth,
     height = window.innerHeight / 1.7;
 
@@ -16,7 +17,10 @@ var n = info.length,
     m = 10,
     degrees = 180 / Math.PI;
 
+counter = -1;
 var spermatozoa = d3.range(n).map(function() {
+    counter++;
+    console.log(counter);
     var x = Math.random() * (width -200) + 100,
 	y = Math.random() * (height -200) + 100;
     return {
@@ -25,21 +29,28 @@ var spermatozoa = d3.range(n).map(function() {
 	vy: (((100) - y) *(1 + .5 * Math.random())) / 500,
 	views: null,
 	path: d3.range(m).map(function() { return [x, y]; }),
-	count: 0
+	count: 0,
+	id: info[counter][0],
+	state: info[counter][1],
+	district: info[counter][2],
+	vote: info[counter][3],
+	name: info[counter][4],
+	party: info[counter][5]
     };
 });
 
+console.log(spermatozoa);
 counter = 0;
 while (counter != n){
     console.log("HELLO");
     //console.log(info[counter][3]);
     sperm = spermatozoa[counter];
-    sperm.info = info[counter]
+    //sperm.info = info[counter]
     y = sperm.path[0][1];
     x = sperm.path[0][1];
-    if (sperm.info[3] == "Yea")
+    if (sperm.vote == "Yea")
 	sperm.vy = (((height - 100) - y) *(1 + .5 * Math.random())) / 500;
-    else if (sperm.info[counter][3] == "Nea")
+    else if (sperm.vote == "Nay")
     	sperm.vy = (((100) - y) *(1 + .5 * Math.random())) / 500;
     else{
     	sperm.vy = (((height )/2 - y) *( 1 + .05 * Math.random())) / 500;
@@ -55,14 +66,20 @@ var svg = d3.select("#house").append("svg")
 svg.append("ellipse").attr("rx", 50).attr("ry", 30).attr("cx", width /2).attr("cy", 80).attr("style","fill: #FFFFFF;");
 svg.append("ellipse").attr("rx", 50).attr("ry", 30).attr("cx", width /2).attr("cy", height - 80).attr("style","fill: #FFFFFF;");
 
+counter = 0;
 
 var g = svg.selectAll("g")
     .data(spermatozoa)
     .enter().append("g");
 
+console.log(g);
+
 var head = g.append("ellipse")
 //.attr("style", "fill: #00bfff;")
-    .attr("style",function(d){if (d.info[5] == "Republican") return "fill:#FF0000" ;if (d.info[5] == "Democrat") return "fill:#00bfff";})
+    .attr("style",function(d){
+	if (d.party == "Republican") return "fill:#FF0000" ;
+	if (d.party == "Democrat") return "fill:#00bfff";
+    })
     .attr("rx", 6.5)
     .attr("ry", 4);
 
@@ -96,7 +113,7 @@ d3.timer(function() {
 	//stop at the walls.
 	if (((x < 100 || x > width -100) && (spermatozoon.vx < -.0000001|| spermatozoon.vx > .0000001)) || ((y < 100 || y > height -100) && (spermatozoon.vy < -.0000001 || spermatozoon.vy > .0000001)))
 	{
-	    if (spermatozoon.info[3] == "Not Voting")
+	    if (spermatozoon.vote == "Not Voting")
 	    { spermatozoon.vx *= -1; spermatozoon.vy *= -1;}
 	    else{
  		spermatozoon.vx *= 0.97; 
