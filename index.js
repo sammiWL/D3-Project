@@ -1,7 +1,7 @@
 console.log("HELLO");
 
 var bill = d3.select("#bill").text("name of the bill blabla");
-var info = data[0].split("\n");
+var info = data[2].split("\n");
 //console.log(info);
 
 var counter = 0;
@@ -48,9 +48,9 @@ while (counter != n){
     //sperm.info = info[counter]
     y = sperm.path[0][1];
     x = sperm.path[0][1];
-    if (sperm.vote == "Yea")
+    if (sperm.vote == "Nay")
 	sperm.vy = (((height - 100) - y) *(1 + .5 * Math.random())) / 500;
-    else if (sperm.vote == "Nay")
+    else if (sperm.vote == "Yea")
     	sperm.vy = (((100) - y) *(1 + .5 * Math.random())) / 500;
     else{
     	sperm.vy = (((height )/2 - y) *( 1 + .05 * Math.random())) / 500;
