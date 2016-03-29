@@ -22,6 +22,6 @@ Spermatozoa Basic Mobility
 Working Idea
 ------------
 
-The sperm are attracted to the Yea or Nea eggs depending on what each Congressman voted for.
+The sperm are attracted to the Yea or Nay eggs depending on what each Congressman voted for.
 Each dataset only contains that of the Senate. The non-voting senators will remain floating 
 around the page.
