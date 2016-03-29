@@ -78,7 +78,8 @@ var head = g.append("ellipse")
 //.attr("style", "fill: #00bfff;")
     .attr("style",function(d){
 	if (d.party == "Republican") return "fill:#FF0000" ;
-	if (d.party == "Democrat") return "fill:#00bfff";
+	else if (d.party == "Democrat") return "fill:#00bfff";
+	else return "fill: green"
     })
     .attr("rx", 6.5)
     .attr("ry", 4);
