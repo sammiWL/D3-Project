@@ -12,11 +12,13 @@ Congressional Voting Records of the Senate
 Source 
 -------
 
+This data is open to the public at the following link: 
 [Congressional Voting Record](https://www.govtrack.us/congress/votes)
 
 Spermatozoa Basic Mobility
 --------------------------
 
+The basic sperm movement was from: 
 [Sperm Movement Source](http://bl.ocks.org/mbostock/1136236)
 
 Working Idea
