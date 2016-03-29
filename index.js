@@ -1,7 +1,15 @@
 console.log("HELLO");
 
+var datacounter = 0;
+var viewNext = function viewNext(){
+		// console.log("hello it me");
+		// Insert changing data code here
+}
+var button = document.getElementById("next").addEventListener("click",viewNext);
 var bill = d3.select("#bill").text("name of the bill blabla");
 var info = data[2].split("\n");
+
+
 //console.log(info);
 
 var counter = 0;

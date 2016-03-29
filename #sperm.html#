@@ -9,7 +9,7 @@
   <body>
     Spermatazoa Congressmen's Opinion On: <br>
 			<div id = "bill" > </div><br>
-			<button type="button" id="next">View Next Bill</button>
+			<br>
 			<h2>Yea</h2>
 			<div class = "yes" id = "yea">
 			</div>
