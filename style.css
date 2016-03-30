@@ -4,6 +4,7 @@ body {
     font-size : 24px;
     text-align: center;
 }
+
 path {
     fill: none;
     stroke: #ccc;
@@ -17,4 +18,38 @@ path {
 
 .tail {
     stroke-width: 2px;
+}
+
+div {
+    width: 80%;
+}
+
+#bill {
+    margin: 0 auto;
+    font-size: 14px;
+}
+#chosen {
+    color: black;
+    background: white;
+    border-radius: 20px;
+    width: 50%;
+    margin: 0 auto;
+    font-size: 20px;
+}
+
+table {
+    margin: 0 auto;
+}
+
+button {
+    border-radius: 15px;
+    font-size: 18px;
+    color: white;
+}
+#prev {
+    background-color: blue;
+}
+
+#next {
+    background-color: red;
 }

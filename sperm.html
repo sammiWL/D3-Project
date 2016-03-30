@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
+  
   <head>
     <title> Sperm Politics </title>
-    <script src="https://d3js.org/d3.v3.min.js"></script>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
+  
   <body>
-    Spermatazoa Congressmen's Opinion On: <br>
     <div id = "bill" > </div><br>
+    <div id = "chosen"></div>
+    <button type="button" id="prev">View Prev Bill</button>
     <button type="button" id="next">View Next Bill</button>
     <h2>Yea</h2>
     <div class = "yes" id = "yea">
@@ -19,6 +21,8 @@
     </div>
     <h2>Nay</h2>
   </body>
+  
+  <script src="https://d3js.org/d3.v3.min.js"></script>
   <script src="data.js"></script>
   <script src="index.js"></script>
 </html>

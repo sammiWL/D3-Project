@@ -1,53 +1,52 @@
-console.log("HELLO");
+//console.log("HELLO");
 
 var datacounter = 0;
 var info = data[0].split("\n");
-var b = d3.select("#bill").text(name_data[0]);
-var intervalId;
+var timeKeeping;
 var degrees = 180 / Math.PI;
 
-var viewNext = function viewNext(){
-    
-    if (datacounter != 4){
-	datacounter += 1;
-    } else {
-	datacounter = 0;
-    }
-    
+//change voting item
+var changeView = function changeView(kind){
+    console.log("CHANGE " + kind);
+    if (kind == "next") datacounter++;
+    if (kind == "prev") datacounter--;
+
+    datacounter = (datacounter + 10) % 5;
+    console.log(datacounter);
     var bill = data[datacounter];
-    d3.select("#bill").text(name_data[datacounter]);
-    info = data[datacounter].split("\n");
+    d3.select("#bill").html("<h1>Spermatazoa Congressmen's Opinion On: " + name_data[datacounter] + "</h1>");
+    info = bill.split("\n");
 
     spermSetup();
-    // console.log(data[datacounter]);
-    console.log(name_data[datacounter]);
-    console.log(info);
 }
-var button = document.getElementById("next").addEventListener("click",viewNext);
-
-//console.log(info);
 
 var spermSetup = function spermSetup(e) {
+    //clear sperm
     document.getElementById("house").innerHTML = "";
-    clearInterval(intervalId);
-    
+
+    //try to stop timer if already on
+    try {
+	timeKeeping.stop();
+    }
+    catch (e) {}
+
+    //format data
     var counter = 0;
     while (counter != info.length){
 	info[counter] = info[counter].split(",");
 	counter ++;
     }
-    //console.log(info);
     var width = window.innerWidth,
 	height = window.innerHeight / 1.7;
 
     var n = info.length;
     var m = 10;
    
-
+    //init sperm with data
     counter = -1;
     var spermatozoa = d3.range(n).map(function() {
 	counter++;
-	console.log(counter);
+	//console.log(counter);
 	var x = Math.random() * (width -200) + 100,
 	    y = Math.random() * (height -200) + 100;
 	return {
@@ -66,13 +65,10 @@ var spermSetup = function spermSetup(e) {
 	};
     });
 
-    //console.log(spermatozoa);
+    //set up sperm moving direction
     counter = 0;
     while (counter != n){
-	console.log("HELLO");
-	//console.log(info[counter][3]);
 	sperm = spermatozoa[counter];
-	//sperm.info = info[counter]
 	y = sperm.path[0][1];
 	x = sperm.path[0][1];
 	if (sperm.vote == "Nay")
@@ -85,24 +81,21 @@ var spermSetup = function spermSetup(e) {
 	counter +=1;
     }
 
-
+    //draw svg
     var svg = d3.select("#house").append("svg")
 	.attr("width", width)
 	.attr("height", height);
 
-    svg.append("ellipse").attr("rx", 50).attr("ry", 30).attr("cx", width /2).attr("cy", 80).attr("style","fill: #FFFFFF;");
-    svg.append("ellipse").attr("rx", 50).attr("ry", 30).attr("cx", width /2).attr("cy", height - 80).attr("style","fill: #FFFFFF;");
+    //draw ellipses || eggs
+    svg.append("ellipse").attr("rx", 100).attr("ry", 60).attr("cx", width /2).attr("cy", 80).attr("style","fill: #FFFFFF;");
+    svg.append("ellipse").attr("rx", 100).attr("ry", 60).attr("cx", width /2).attr("cy", height - 80).attr("style","fill: #FFFFFF;");
 
-    counter = 0;
-
+    //add all the sperm
     var g = svg.selectAll("g")
 	.data(spermatozoa)
 	.enter().append("g");
 
-    console.log(g);
-
     var head = g.append("ellipse")
-    //.attr("style", "fill: #00bfff;")
 	.attr("style",function(d){
 	    if (d.party == "Republican") return "fill:#FF0000" ;
 	    else if (d.party == "Democrat") return "fill:#00bfff";
@@ -119,10 +112,15 @@ var spermSetup = function spermSetup(e) {
 	.datum(function(d) { return d.path; })
 	.attr("class", "tail");
 
+    g.on("click", function(e) {
+	var thisIndex = findIndex(this);
+	displaySperm(spermatozoa[thisIndex - 2]);
+    });
+		       
     var tail = g.selectAll("path");
 
-    var spermMovement = function spermMovement() {
-    //d3.timer(function() {
+    //the part that keeps the sperm moving
+    timeKeeping = d3.timer(function() {
 	for (var i = -1; ++i < n;) {
 	    var spermatozoon = spermatozoa[i],
 		path = spermatozoon.path,
@@ -130,14 +128,9 @@ var spermSetup = function spermSetup(e) {
 		dy = spermatozoon.vy,
 		x = path[0][0] += dx,
 		y = path[0][1] += dy,
-		//speed = Math.sqrt(dx * dx + dy * dy),
 		speed = 1,
 		count = speed * 10,
 		k1 = -5 - speed / 3;
-
-	    // Bounce off the walls.
-	    //if (x < 100 || x > width-100) spermatozoon.vx *= -1;
-	    //if (y < 100 || y > height-100) spermatozoon.vy *= -1;
 
 	    //stop at the walls.
 	    if (((x < 100 || x > width -100) && (spermatozoon.vx < -.0000001|| spermatozoon.vx > .0000001)) || ((y < 100 || y > height -100) && (spermatozoon.vy < -.0000001 || spermatozoon.vy > .0000001)))
@@ -148,7 +141,6 @@ var spermSetup = function spermSetup(e) {
  		    spermatozoon.vx *= 0.97; 
 		    spermatozoon.vy *= 0.97;}}
 	    
-
 	    // Swim!
 	    for (var j = 0; ++j < m;) {
 		var vx = x - path[j][0],
@@ -162,20 +154,54 @@ var spermSetup = function spermSetup(e) {
 
 	head.attr("transform", headTransform);
 	tail.attr("d", tailPath);
-    };
-    
-    intervalId = window.setInterval(spermMovement, 16);
+    });
 
 }
 
+//rotate head accordingly
 var headTransform = function headTransform(d) {
 	return "translate(" + d.path[0] + ")rotate(" + Math.atan2(d.vy, d.vx) * degrees + ")";
 }
 
+//move tail accordingly
 var tailPath = function tailPath(d) {
     return "M" + d.join("L");
 }
 
-var button = document.getElementById("next");
-button.addEventListener("click",viewNext);
-viewNext();
+//find the index of the child to display information
+var findIndex = function findIndex(child) {
+    var i = 0;
+    while( (child = child.previousSibling) != null ) {
+	i++;
+    }
+    return i;
+}
+
+//display sperm info
+var displaySperm = function displaySperm(sperm) {
+    var change = d3.select("#chosen");
+    change.html("<h2>Sperm Info</h2>" + 
+		"<table>" + 
+		"<tr><td>Name:</td><td>" + sperm.name+ "</td></tr>" +
+	        "<tr><td>Person:</td><td>" + sperm.id + "</td></tr>" +
+	        "<tr><td>State:</td><td>" + sperm.state + "</td></tr>" +
+	        "<tr><td>Party:</td><td>" + sperm.party + "</td></tr>" + 
+	        "<tr><td>Vote:</td><td>" + sperm.vote + "</td></tr>" +
+	        "</table>");
+    console.log("SHOULDA CHANGED");
+}
+
+//button events 
+var next = document.getElementById("next");
+next.addEventListener("click", function (e)  {
+    changeView("next");
+});
+
+
+var prev = document.getElementById("prev");
+prev.addEventListener("click", function(e) {
+    changeView("prev");
+    console.log("PREVIOUS CLICKED");}
+);
+
+changeView("prev");
