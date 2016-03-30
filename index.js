@@ -3,6 +3,8 @@ console.log("HELLO");
 var datacounter = 0;
 var info = data[0].split("\n");
 var b = d3.select("#bill").text(name_data[0]);
+var intervalId;
+var degrees = 180 / Math.PI;
 
 var viewNext = function viewNext(){
     
@@ -27,6 +29,8 @@ var button = document.getElementById("next").addEventListener("click",viewNext);
 
 var spermSetup = function spermSetup(e) {
     document.getElementById("house").innerHTML = "";
+    clearInterval(intervalId);
+    
     var counter = 0;
     while (counter != info.length){
 	info[counter] = info[counter].split(",");
@@ -36,9 +40,9 @@ var spermSetup = function spermSetup(e) {
     var width = window.innerWidth,
 	height = window.innerHeight / 1.7;
 
-    var n = info.length,
-	m = 10,
-	degrees = 180 / Math.PI;
+    var n = info.length;
+    var m = 10;
+   
 
     counter = -1;
     var spermatozoa = d3.range(n).map(function() {
@@ -117,7 +121,8 @@ var spermSetup = function spermSetup(e) {
 
     var tail = g.selectAll("path");
 
-    d3.timer(function() {
+    var spermMovement = function spermMovement() {
+    //d3.timer(function() {
 	for (var i = -1; ++i < n;) {
 	    var spermatozoon = spermatozoa[i],
 		path = spermatozoon.path,
@@ -157,15 +162,18 @@ var spermSetup = function spermSetup(e) {
 
 	head.attr("transform", headTransform);
 	tail.attr("d", tailPath);
-    });
+    };
+    
+    intervalId = window.setInterval(spermMovement, 16);
 
-    function headTransform(d) {
+}
+
+var headTransform = function headTransform(d) {
 	return "translate(" + d.path[0] + ")rotate(" + Math.atan2(d.vy, d.vx) * degrees + ")";
-    }
+}
 
-    function tailPath(d) {
-	return "M" + d.join("L");
-    }
+var tailPath = function tailPath(d) {
+    return "M" + d.join("L");
 }
 
 var button = document.getElementById("next");
