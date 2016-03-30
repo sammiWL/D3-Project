@@ -2,17 +2,15 @@
 
 var datacounter = 0;
 var info = data[0].split("\n");
-var timeKeeping;
+var intervalId;
 var degrees = 180 / Math.PI;
 
 //change voting item
 var changeView = function changeView(kind){
-    console.log("CHANGE " + kind);
     if (kind == "next") datacounter++;
     if (kind == "prev") datacounter--;
 
     datacounter = (datacounter + 10) % 5;
-    console.log(datacounter);
     var bill = data[datacounter];
     d3.select("#bill").html("<h1>Spermatazoa Congressmen's Opinion On: " + name_data[datacounter] + "</h1>");
     info = bill.split("\n");
@@ -23,12 +21,7 @@ var changeView = function changeView(kind){
 var spermSetup = function spermSetup(e) {
     //clear sperm
     document.getElementById("house").innerHTML = "";
-
-    //try to stop timer if already on
-    try {
-	timeKeeping.stop();
-    }
-    catch (e) {}
+    clearInterval(intervalId);
 
     //format data
     var counter = 0;
@@ -120,7 +113,7 @@ var spermSetup = function spermSetup(e) {
     var tail = g.selectAll("path");
 
     //the part that keeps the sperm moving
-    timeKeeping = d3.timer(function() {
+    var move = function  move() {
 	for (var i = -1; ++i < n;) {
 	    var spermatozoon = spermatozoa[i],
 		path = spermatozoon.path,
@@ -154,7 +147,8 @@ var spermSetup = function spermSetup(e) {
 
 	head.attr("transform", headTransform);
 	tail.attr("d", tailPath);
-    });
+    };
+    intervalId = setInterval(move,20);
 
 }
 
@@ -201,7 +195,6 @@ next.addEventListener("click", function (e)  {
 var prev = document.getElementById("prev");
 prev.addEventListener("click", function(e) {
     changeView("prev");
-    console.log("PREVIOUS CLICKED");}
-);
+});
 
 changeView("prev");
