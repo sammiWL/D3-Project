@@ -1,3 +1,7 @@
+#my{
+zoom: 80%;
+}
+
 body {
     background: #000;
     color: #FFF;
@@ -29,8 +33,17 @@ div {
     font-size: 14px;
 }
 #chosen {
-    color: black;
-    background: white;
+    color: white;
+    background: black;
+    border-radius: 20px;
+    width: 50%;
+    margin: 0 auto;
+    font-size: 20px;
+}
+
+#house {
+    color: white;
+    background: black;
     border-radius: 20px;
     width: 50%;
     margin: 0 auto;

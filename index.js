@@ -29,8 +29,8 @@ var spermSetup = function spermSetup(e) {
 	info[counter] = info[counter].split(",");
 	counter ++;
     }
-    var width = window.innerWidth,
-	height = window.innerHeight / 1.7;
+    var width = window.innerWidth/2,
+	height = window.innerHeight / 2;
 
     var n = info.length;
     var m = 10;
@@ -111,7 +111,7 @@ var spermSetup = function spermSetup(e) {
     });
 		       
     var tail = g.selectAll("path");
-
+    displaySperm(spermatozoa[0]);
     //the part that keeps the sperm moving
     var move = function  move() {
 	for (var i = -1; ++i < n;) {
